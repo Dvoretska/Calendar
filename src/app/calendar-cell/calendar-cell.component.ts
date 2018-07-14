@@ -6,7 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./calendar-cell.component.css']
 })
 export class CalendarCellComponent implements OnInit {
-  @Input() day: number;
+  @Input() day: Object;
+  @Input() selectedKey: String;
+
   constructor() { }
 
   ngOnInit() {

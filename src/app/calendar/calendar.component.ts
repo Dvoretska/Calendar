@@ -11,6 +11,9 @@ import 'moment/locale/ru'
 export class CalendarComponent implements OnInit {
   weeks: any[][] = [];
   moment: moment.Moment = moment();
+  today: moment.Moment = moment();
+  currentMonth: String;
+  selectedKey: String;
   constructor() { }
 
   ngOnInit() {
@@ -20,30 +23,45 @@ export class CalendarComponent implements OnInit {
   setLocale(lang) {
     this.moment.locale(lang);
   }
-
+  showToday(): void {
+    this.moment = moment();
+    this.selectDay(this.moment.format('D MMM'))
+    this.getWeeks();
+  }
   prevMonth(): void {
     this.moment = moment(this.moment).subtract(1, 'months');
     this.getWeeks();
   }
-
   nextMonth(): void {
     this.moment = moment(this.moment).add(1, 'months');
     this.getWeeks();
   }
-
-  getWeeks () {
+  getTitle(title: String): String {
+    return title[0].toUpperCase() + title.slice(1)
+  }
+  getWeeks(): void {
     let days = [];
     const startOfTable = moment(this.moment).startOf('month').subtract(this.getPrevOfTable(), 'days');
-    for(let i = 0; i < 42; i++) {
-      days.push(startOfTable.add(1, 'days').date());
+    const startOfMonth = moment(this.moment).startOf('month');
+    for (let i = 0; i < 42; i++) {
+      days.push({
+        date: startOfTable.add(1, 'days').date(),
+        month: startOfTable.date() == 1 ? startOfTable.format('MMM').slice(0, 3) : null,
+        weekday: i < 7 ? this.getTitle(startOfTable.format('dd')) : null,
+        isToday: startOfTable.format("MMM D YY") == this.today.format('MMM D YY'),
+        isCurrentMonth: startOfTable.format('MMM') == startOfMonth.format('MMM'),
+        key: startOfTable.format('D MMM')
+      })
     }
     this.weeks = _.chunk(days, 7);
-    // console.log(moment(this._moment).startOf('month').format('MMM').slice(0,3))
+    this.currentMonth = this.getTitle(this.moment.format('MMMM YYYY'));
   }
-
-  getPrevOfTable () {
+  getPrevOfTable(): number {
     const firstOfMonth = moment(this.moment).startOf('month').day();
     return firstOfMonth == 0 ? 7 : firstOfMonth;
+  }
+  selectDay(key: String): void {
+    this.selectedKey = key;
   }
 
 }

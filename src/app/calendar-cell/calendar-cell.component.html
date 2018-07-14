@@ -1,1 +1,7 @@
-<span class="date-text">{{day}}</span>
+<span class="date-text" [ngClass]="{'selected-cell': selectedKey == day.key}">
+  <span>{{day.weekday}}</span>
+  <div [ngClass]="{'month': day.isCurrentMonth}" class="date-box">
+    <span [ngClass]="{'today' : day.isToday}">{{day.date}}</span>
+    <span>{{day.month}}</span>
+  </div>
+</span>
