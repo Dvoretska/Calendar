@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CalendarCellComponent implements OnInit {
   @Input() day: Object;
-  @Input() selectedKey: String;
+  @Input() selectedKey: string;
 
   constructor() { }
 

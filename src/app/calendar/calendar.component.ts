@@ -12,8 +12,11 @@ export class CalendarComponent implements OnInit {
   weeks: any[][] = [];
   moment: moment.Moment = moment();
   today: moment.Moment = moment();
-  currentMonth: String;
-  selectedKey: String;
+  currentMonth: string;
+  selectedKey: string;
+  disabledAddBtn: boolean = true;
+  disabledEditBtn: boolean = true;
+  isModalShown: boolean = false;
   constructor() { }
 
   ngOnInit() {
@@ -36,7 +39,7 @@ export class CalendarComponent implements OnInit {
     this.moment = moment(this.moment).add(1, 'months');
     this.getWeeks();
   }
-  getTitle(title: String): String {
+  getTitle(title: string): string {
     return title[0].toUpperCase() + title.slice(1)
   }
   getWeeks(): void {
@@ -50,7 +53,7 @@ export class CalendarComponent implements OnInit {
         weekday: i < 7 ? this.getTitle(startOfTable.format('dd')) : null,
         isToday: startOfTable.format("MMM D YY") == this.today.format('MMM D YY'),
         isCurrentMonth: startOfTable.format('MMM') == startOfMonth.format('MMM'),
-        key: startOfTable.format('D MMM')
+        key: startOfTable.format('D MMM YYYY')
       })
     }
     this.weeks = _.chunk(days, 7);
@@ -60,8 +63,13 @@ export class CalendarComponent implements OnInit {
     const firstOfMonth = moment(this.moment).startOf('month').day();
     return firstOfMonth == 0 ? 7 : firstOfMonth;
   }
-  selectDay(key: String): void {
+  selectDay(key: string): void {
     this.selectedKey = key;
+    this.disabledAddBtn = false;
+    this.isModalShown = false;
+  }
+  toggleModal(): void {
+    this.isModalShown = !this.isModalShown;
   }
 
 }

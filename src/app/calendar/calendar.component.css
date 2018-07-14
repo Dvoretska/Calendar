@@ -1,7 +1,7 @@
 .calendar-container {
   width: 100vw;
   height: 100vh;
-  min-width: 600px;
+  min-width: 777px;
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', Arial, sans-serif;
@@ -72,5 +72,9 @@ input {
   border: none;
   padding-left: 5px;
   box-shadow: 1px 0px 10px -3px #000000 inset;
+}
+.disabled {
+  background: #ccc;
+  pointer-events: none;
 }
 
