@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -8,18 +8,31 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 export class ModalComponent implements OnInit {
   @Input() isModalShown: boolean;
   @Input() selectedKey: string;
+
+  @Output() eventClicked = new EventEmitter<Event>();
+
   subject: string;
   user: string;
+  time: string;
   constructor() { }
 
   ngOnInit() {
-    console.log('ngOninit')
   }
   ngOnChanges (changes: SimpleChanges) {
     this.subject = '';
     this.user = '';
+    this.time = '';
 	}
   saveEvent(): void {
-    console.log(this.subject, this.user)
+    const events = JSON.parse(localStorage.getItem("events")) || {}
+    const key = this.selectedKey;
+    if (!events[key])
+    {
+      events[key] = {};
+    }
+    events[key][this.time] = [this.subject, this.user];
+    localStorage.setItem("events", JSON.stringify(events));
+    this.isModalShown = false;
+    this.eventClicked.emit();
   }
 }

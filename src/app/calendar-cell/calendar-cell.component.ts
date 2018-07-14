@@ -8,10 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class CalendarCellComponent implements OnInit {
   @Input() day: Object;
   @Input() selectedKey: string;
+  @Input() savedEvents: Object;
 
+  objectKeys = Object.keys;
   constructor() { }
 
   ngOnInit() {
   }
-
 }

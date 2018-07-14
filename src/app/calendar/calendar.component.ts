@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import 'moment/locale/ru'
+import { ModalEditComponent } from '../modal-edit/modal-edit.component'
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: ['./calendar.component.css'],
+  directives: [ModalEditComponent]
 })
 export class CalendarComponent implements OnInit {
   weeks: any[][] = [];
@@ -17,12 +19,20 @@ export class CalendarComponent implements OnInit {
   disabledAddBtn: boolean = true;
   disabledEditBtn: boolean = true;
   isModalShown: boolean = false;
+  isModalEditShown: boolean = false;
+  savedEvents: Object;
+  @ViewChild(ModalEditComponent) child:ModalEditComponent;
   constructor() { }
 
   ngOnInit() {
     this.setLocale('ru');
     this.getWeeks();
+    this.readSavedEvents();
   }
+
+   readSavedEvents(): void {
+     this.savedEvents = JSON.parse(localStorage.getItem("events")) || {}
+   }
   setLocale(lang) {
     this.moment.locale(lang);
   }
@@ -66,10 +76,17 @@ export class CalendarComponent implements OnInit {
   selectDay(key: string): void {
     this.selectedKey = key;
     this.disabledAddBtn = false;
+    this.disabledEditBtn = false;
     this.isModalShown = false;
   }
   toggleModal(): void {
     this.isModalShown = !this.isModalShown;
+    this.isModalEditShown = false;
+  }
+  toggleModalEdit(): void {
+    this.isModalEditShown = !this.isModalEditShown;
+    this.isModalShown = false;
+    this.child.updateEvents();
   }
 
 }

@@ -3,5 +3,8 @@
   <div [ngClass]="{'month': day.isCurrentMonth}" class="date-box">
     <span [ngClass]="{'today' : day.isToday}">{{day.date}}</span>
     <span>{{day.month}}</span>
+    <div *ngIf="savedEvents">
+      <div *ngFor="let time of objectKeys(savedEvents)">{{time}} {{savedEvents[time][0]}}</div>
+    </div>
   </div>
 </span>

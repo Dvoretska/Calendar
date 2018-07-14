@@ -1,7 +1,7 @@
 <div class="dialog-box" *ngIf="isModalShown">
   <span>{{selectedKey}}</span>
   <input type="text" [(ngModel)]="subject"  placeholder="Название события">
-  <input type="time">
+  <input type="time" [(ngModel)]="time" >
   <input type="text" [(ngModel)]="user" placeholder="Участник">
   <button class="btn-save" (click)="saveEvent()">Сохранить</button>
 </div>
