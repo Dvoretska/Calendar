@@ -31,14 +31,14 @@ export class CalendarComponent implements OnInit {
   }
 
    readSavedEvents(): void {
-     this.savedEvents = JSON.parse(localStorage.getItem("events")) || {}
+     this.savedEvents = JSON.parse(localStorage.getItem("events")) || {};
    }
   setLocale(lang) {
     this.moment.locale(lang);
   }
   showToday(): void {
     this.moment = moment();
-    this.selectDay(this.moment.format('D MMM'))
+    this.selectDay(this.moment.format('D MMM YYYY'));
     this.getWeeks();
   }
   prevMonth(): void {
@@ -75,8 +75,8 @@ export class CalendarComponent implements OnInit {
   }
   selectDay(key: string): void {
     this.selectedKey = key;
+    this.disabledEditBtn = !this.savedEvents[this.selectedKey]
     this.disabledAddBtn = false;
-    this.disabledEditBtn = false;
     this.isModalShown = false;
   }
   toggleModal(): void {

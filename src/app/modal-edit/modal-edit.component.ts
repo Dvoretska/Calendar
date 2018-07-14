@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-modal-edit',
@@ -8,7 +8,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ModalEditComponent implements OnInit {
   @Input() selectedKey: string;
   @Input() isModalEditShown: boolean;
-  objectKeys = Object.keys;
+
+  @Output() eventClicked = new EventEmitter<Event>();
+
+  private _allEvents: Object;
   events: Object;
 
   constructor() { }
@@ -17,9 +20,14 @@ export class ModalEditComponent implements OnInit {
 
   }
   updateEvents(): void {
-    const eventsLocal = JSON.parse(localStorage.getItem("events")) || {};
-    const key = this.selectedKey;
-    this.events = eventsLocal[key] || {};
+    this._allEvents = JSON.parse(localStorage.getItem("events")) || {};
+    this.events = this._allEvents[this.selectedKey] || {};
+  }
+  saveUpdatedEvent(): void {
+    this._allEvents[this.selectedKey] = this.events;
+    localStorage.setItem("events", JSON.stringify(this._allEvents))
+    this.eventClicked.emit();
+    this.isModalEditShown = false;
   }
 
 }

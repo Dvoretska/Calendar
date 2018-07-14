@@ -1,9 +1,9 @@
 <div *ngIf="isModalEditShown">
   <span>{{selectedKey}}</span>
-  <div class="dialog-box" *ngFor="let time of objectKeys(events)">
-    <input type="text" value="events[time][0]"  placeholder="Название события">
-    <input type="time" value="time" >
-    <input type="text" value="events[time][1]" placeholder="Участник">
+  <div class="dialog-box" *ngFor="let time of events">
+    <input type="text" [(ngModel)]="time[0]"  placeholder="Название события">
+    <input type="text" [(ngModel)]="time[1]" placeholder="Время">
+    <input type="text" [(ngModel)]="time[2]" placeholder="Участник">
   </div>
-  <button class="btn-save">Сохранить</button>
+  <button class="btn-save" (click)="saveUpdatedEvent()">Сохранить</button>
 </div>

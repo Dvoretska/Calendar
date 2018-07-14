@@ -28,9 +28,9 @@ export class ModalComponent implements OnInit {
     const key = this.selectedKey;
     if (!events[key])
     {
-      events[key] = {};
+      events[key] = [];
     }
-    events[key][this.time] = [this.subject, this.user];
+    events[key].push([this.subject, this.time, this.user]);
     localStorage.setItem("events", JSON.stringify(events));
     this.isModalShown = false;
     this.eventClicked.emit();

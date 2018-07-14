@@ -30,7 +30,8 @@
   </app-modal>
   <app-modal-edit
     [selectedKey]="selectedKey"
-    [isModalEditShown]="isModalEditShown">
+    [isModalEditShown]="isModalEditShown"
+    (eventClicked)="readSavedEvents()">
   </app-modal-edit>
   <div *ngFor="let week of weeks" class="month-grid">
     <ng-container *ngFor="let day of week">
