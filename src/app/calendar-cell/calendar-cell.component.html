@@ -1,10 +1,19 @@
-<span class="date-text" [ngClass]="{'selected-cell': selectedKey == day.key}">
+<span class="date-text"
+  [ngClass]="{'selected-cell': selectedKey == day.key,
+  'searched-cell': searchResult.includes(day.key)}">
   <span>{{day.weekday}}</span>
   <div [ngClass]="{'month': day.isCurrentMonth}" class="date-box">
     <span [ngClass]="{'today' : day.isToday}">{{day.date}}</span>
     <span>{{day.month}}</span>
-    <div *ngIf="savedEvents">
-      <div *ngFor="let time of objectKeys(savedEvents)">{{savedEvents[time][1]}} {{savedEvents[time][0]}}</div>
+    <div *ngIf="savedEvents" class="saved-events">
+      <div *ngFor="let event of objectKeys(savedEvents)" class="event-line"
+           [ngClass]="{'event-only': !savedEvents[event][0]}">
+        <span class="dot" *ngIf="savedEvents[event][0]">&#9679;</span>
+        <span class="subject-event">{{savedEvents[event][0]}}</span>
+        <span>{{savedEvents[event][1]}}</span>
+        <span *ngIf="savedEvents[event][2]">,&nbsp;</span>
+        <span>{{savedEvents[event][2]}}</span>
+      </div>
     </div>
   </div>
 </span>

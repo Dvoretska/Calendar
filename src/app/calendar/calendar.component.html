@@ -21,7 +21,9 @@
         C21.517,9.026,21.517,14.63,18.073,18.074z"/>
     </g>
     </svg>
-    <input type="text" placeholder="Событие, дата или участник">
+    <input type="text" [(ngModel)]="searchValue"
+           placeholder="Событие, дата или участник"
+           (keyup.enter)="search()">
   </div>
   <app-modal
     [isModalShown]="isModalShown"
@@ -38,6 +40,7 @@
       <app-calendar-cell
         [day]="day"
         [selectedKey]="selectedKey"
+        [searchResult]="searchResult"
         (click)="selectDay(day.key)"
         [savedEvents]="savedEvents[day.key]">
       </app-calendar-cell>

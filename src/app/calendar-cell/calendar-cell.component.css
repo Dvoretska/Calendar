@@ -10,12 +10,14 @@
   font-size: 13px;
   padding: 0 7px;
   height: 100%;
+  cursor: pointer;
 }
 span {
   display: inline-block;
 }
 .date-box {
   padding-top: 5px;
+  overflow: hidden;
 }
 .month {
   color: black;
@@ -30,6 +32,37 @@ span {
   color: white;
   text-align: center;
 }
+.saved-events {
+  overflow: hidden;
+}
 .selected-cell {
   background-color: #eee;
 }
+.event-line {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2px 0;
+  margin-bottom: 1px;
+  white-space: nowrap;
+}
+.subject-event {
+  margin: 0 3px 0 5px;
+}
+.dot {
+  color: #006FCA;
+  width: 7px;
+  height: 7px;
+  line-height: 5px;
+}
+.event-only {
+  background-color: #009CE5;
+  color: white;
+  margin-left: -5px;
+}
+.searched-cell {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.6);
+  background: yellow;
+}
+

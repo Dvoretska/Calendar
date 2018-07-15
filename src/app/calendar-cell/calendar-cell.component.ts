@@ -9,9 +9,11 @@ export class CalendarCellComponent implements OnInit {
   @Input() day: Object;
   @Input() selectedKey: string;
   @Input() savedEvents: Object;
+  @Input() searchResult: Array<string>;
 
   objectKeys = Object.keys;
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

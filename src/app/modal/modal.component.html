@@ -1,7 +1,9 @@
 <div class="dialog-box" *ngIf="isModalShown">
   <span>{{selectedKey}}</span>
-  <input type="text" [(ngModel)]="subject"  placeholder="Название события">
-  <input type="text" [(ngModel)]="time" placeholder="Время">
-  <input type="text" [(ngModel)]="user" placeholder="Участник">
-  <button class="btn-save" (click)="saveEvent()">Сохранить</button>
+  <div>
+    <input type="text" [(ngModel)]="time" placeholder="Время">
+    <input type="text" [(ngModel)]="subject"  placeholder="Название события">
+    <input type="text" [(ngModel)]="user" placeholder="Участник">
+  </div>
+  <button class="btn-save" (click)="saveEvent()" [ngClass]="{'disabled': !subject }">Сохранить</button>
 </div>

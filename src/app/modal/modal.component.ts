@@ -24,13 +24,12 @@ export class ModalComponent implements OnInit {
     this.time = '';
 	}
   saveEvent(): void {
-    const events = JSON.parse(localStorage.getItem("events")) || {}
+    const events = JSON.parse(localStorage.getItem("events")) || {};
     const key = this.selectedKey;
-    if (!events[key])
-    {
+    if (!events[key]) {
       events[key] = [];
     }
-    events[key].push([this.subject, this.time, this.user]);
+    events[key].push([this.time, this.subject, this.user]);
     localStorage.setItem("events", JSON.stringify(events));
     this.isModalShown = false;
     this.eventClicked.emit();

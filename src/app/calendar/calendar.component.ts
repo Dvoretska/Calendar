@@ -7,8 +7,7 @@ import { ModalEditComponent } from '../modal-edit/modal-edit.component'
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css'],
-  directives: [ModalEditComponent]
+  styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
   weeks: any[][] = [];
@@ -21,38 +20,45 @@ export class CalendarComponent implements OnInit {
   isModalShown: boolean = false;
   isModalEditShown: boolean = false;
   savedEvents: Object;
+  searchValue: string = '';
+  searchResult: any[] = [];
+
   @ViewChild(ModalEditComponent) child:ModalEditComponent;
+
   constructor() { }
 
   ngOnInit() {
     this.setLocale('ru');
-    this.getWeeks();
+    this.generateWeeks();
     this.readSavedEvents();
   }
 
-   readSavedEvents(): void {
-     this.savedEvents = JSON.parse(localStorage.getItem("events")) || {};
-   }
-  setLocale(lang) {
+  readSavedEvents(): void {
+    this.savedEvents = JSON.parse(localStorage.getItem("events")) || {};
+  }
+  setLocale(lang): void {
     this.moment.locale(lang);
   }
   showToday(): void {
     this.moment = moment();
-    this.selectDay(this.moment.format('D MMM YYYY'));
-    this.getWeeks();
+    this.selectDay(this.getFormattedDate(this.moment));
+    this.generateWeeks();
   }
   prevMonth(): void {
     this.moment = moment(this.moment).subtract(1, 'months');
-    this.getWeeks();
+    this.generateWeeks();
   }
   nextMonth(): void {
     this.moment = moment(this.moment).add(1, 'months');
-    this.getWeeks();
+    this.generateWeeks();
   }
   getTitle(title: string): string {
-    return title[0].toUpperCase() + title.slice(1)
+    return title[0].toUpperCase() + title.slice(1);
   }
-  getWeeks(): void {
+  getFormattedDate(date): string {
+    return date.format('D MMM YYYY');
+  }
+  generateWeeks(): void {
     let days = [];
     const startOfTable = moment(this.moment).startOf('month').subtract(this.getPrevOfTable(), 'days');
     const startOfMonth = moment(this.moment).startOf('month');
@@ -61,9 +67,9 @@ export class CalendarComponent implements OnInit {
         date: startOfTable.add(1, 'days').date(),
         month: startOfTable.date() == 1 ? startOfTable.format('MMM').slice(0, 3) : null,
         weekday: i < 7 ? this.getTitle(startOfTable.format('dd')) : null,
-        isToday: startOfTable.format("MMM D YY") == this.today.format('MMM D YY'),
+        isToday: this.getFormattedDate(startOfTable) == this.getFormattedDate(this.today),
         isCurrentMonth: startOfTable.format('MMM') == startOfMonth.format('MMM'),
-        key: startOfTable.format('D MMM YYYY')
+        key: this.getFormattedDate(startOfTable)
       })
     }
     this.weeks = _.chunk(days, 7);
@@ -78,6 +84,7 @@ export class CalendarComponent implements OnInit {
     this.disabledEditBtn = !this.savedEvents[this.selectedKey]
     this.disabledAddBtn = false;
     this.isModalShown = false;
+    this.isModalEditShown = false;
   }
   toggleModal(): void {
     this.isModalShown = !this.isModalShown;
@@ -88,5 +95,29 @@ export class CalendarComponent implements OnInit {
     this.isModalShown = false;
     this.child.updateEvents();
   }
-
+  search() {
+    this.searchResult = [];
+    if(!this.searchValue) return;
+    const searchDate = moment(this.searchValue);
+    if(searchDate.isValid()) {
+      this.moment = searchDate;
+      this.selectDay(this.getFormattedDate(searchDate));
+      this.generateWeeks();
+      this.searchResult.push(this.getFormattedDate(searchDate));
+    } else {
+      for (let key in this.savedEvents) {
+        for (let item of this.savedEvents[key]) {
+          if (item[1].indexOf(this.searchValue) !== -1) {
+            this.searchResult.push(key);
+            break;
+          } else {
+            if(item[2] == this.searchValue) {
+              this.searchResult.push(key);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
 }
